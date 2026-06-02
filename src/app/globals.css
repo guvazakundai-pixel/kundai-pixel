@@ -25,7 +25,6 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
 }
 
 body {
@@ -63,17 +62,6 @@ body {
   50% { box-shadow: 0 0 40px rgba(212, 168, 83, 0.6); }
 }
 
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes sparkle {
-  0%, 100% { opacity: 0; transform: scale(0); }
-  50% { opacity: 1; transform: scale(1); }
-}
-
 .animate-float { animation: float 6s ease-in-out infinite; }
 .animate-shimmer {
   background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
@@ -83,11 +71,6 @@ body {
   -webkit-text-fill-color: transparent;
 }
 .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
-.animate-gradient {
-  background: linear-gradient(270deg, #d4a853, #0a0a0a, #d4a853);
-  background-size: 400% 400%;
-  animation: gradient-shift 8s ease infinite;
-}
 
 .glass {
   background: rgba(255, 255, 255, 0.05);
@@ -102,6 +85,10 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-.section-snap {
-  scroll-snap-align: start;
+.line-reveal {
+  width: 0;
+  transition: width 0.8s ease-out;
+}
+.line-reveal.visible {
+  width: 64px;
 }

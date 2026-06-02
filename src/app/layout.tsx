@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Kundai Pixel | Creative Studio",
     description: "Premium creative studio by Kundai Guvaza",
-    images: ["https://i.ibb.co/kgPDwfqw/2.jpg"],
+    images: ["/images/hero-wide.webp"],
   },
 };
 

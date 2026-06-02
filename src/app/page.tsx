@@ -2,41 +2,7 @@
 
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
-
-const IMAGES = {
-  hero: "https://i.ibb.co/kgPDwfqw/2.jpg",
-  gallery1: "https://i.ibb.co/dsD9TQKJ/3.jpg",
-  gallery2: "https://i.ibb.co/MDFPyypV/4.jpg",
-  gallery3: "https://i.ibb.co/sv2ryFN2/5.jpg",
-};
-
-function FloatingParticles() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {Array.from({ length: 20 }).map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-1 h-1 rounded-full bg-gold/30"
-          initial={{
-            x: `${Math.random() * 100}%`,
-            y: `${Math.random() * 100}%`,
-            opacity: 0,
-          }}
-          animate={{
-            y: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
-            opacity: [0, 0.8, 0],
-          }}
-          transition={{
-            duration: Math.random() * 8 + 4,
-            repeat: Infinity,
-            repeatType: "reverse",
-            delay: Math.random() * 3,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
+import Image from "next/image";
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -92,8 +58,9 @@ function Navbar() {
         </div>
 
         <button
-          className="md:hidden text-gold"
+          className="md:hidden text-gold cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
         >
           <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
             {menuOpen ? (
@@ -145,22 +112,21 @@ function HeroSection() {
     <section
       ref={ref}
       id="home"
-      className="relative min-h-screen flex items-center justify-center section-snap overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       <motion.div style={{ y }} className="absolute inset-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${IMAGES.hero})` }}
+        <Image
+          src="/images/hero-wide.webp"
+          alt="Kundai Pixel Creative Studio"
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#0a0a0a]" />
       </motion.div>
 
-      <FloatingParticles />
-
-      <motion.div
-        style={{ opacity }}
-        className="relative z-10 text-center px-6 max-w-5xl"
-      >
+      <div className="relative z-10 text-center px-6 max-w-5xl">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -227,7 +193,7 @@ function HeroSection() {
             </motion.a>
           </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 
       <motion.div
         className="absolute bottom-10 left-1/2 -translate-x-1/2"
@@ -254,7 +220,7 @@ function AboutSection() {
     <section
       ref={ref}
       id="about"
-      className="relative min-h-screen flex items-center py-24 section-snap"
+      className="relative min-h-screen flex items-center py-24"
     >
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
         <motion.div
@@ -264,13 +230,12 @@ function AboutSection() {
           className="relative"
         >
           <div className="relative aspect-[3/4] overflow-hidden rounded-sm">
-            <motion.img
-              src={IMAGES.gallery1}
+            <Image
+              src="/images/portrait-1.webp"
               alt="Kundai creative work"
-              className="object-cover w-full h-full"
-              initial={{ scale: 1.2 }}
-              animate={isInView ? { scale: 1 } : {}}
-              transition={{ duration: 1.2 }}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
           </div>
@@ -346,25 +311,25 @@ function GallerySection() {
 
   const galleryItems = [
     {
-      src: IMAGES.hero,
+      src: "/images/studio-1.webp",
       title: "Ethereal Vision",
       category: "Photography",
       span: "md:col-span-2 md:row-span-2",
     },
     {
-      src: IMAGES.gallery1,
+      src: "/images/portrait-2.webp",
       title: "Golden Hour",
       category: "Portrait",
       span: "",
     },
     {
-      src: IMAGES.gallery2,
+      src: "/images/studio-2.webp",
       title: "Urban Soul",
       category: "Creative",
       span: "",
     },
     {
-      src: IMAGES.gallery3,
+      src: "/images/portrait-3.webp",
       title: "Midnight Glow",
       category: "Editorial",
       span: "md:col-span-2",
@@ -375,7 +340,7 @@ function GallerySection() {
     <section
       ref={ref}
       id="gallery"
-      className="relative min-h-screen py-24 section-snap"
+      className="relative min-h-screen py-24"
     >
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
@@ -403,27 +368,21 @@ function GallerySection() {
               transition={{ duration: 0.6, delay: i * 0.15 }}
               whileHover={{ scale: 1.02 }}
             >
-              <motion.img
+              <Image
                 src={item.src}
                 alt={item.title}
-                className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <motion.p
-                  className="text-gold text-xs tracking-[0.3em] uppercase mb-2"
-                  initial={{ y: 20 }}
-                  whileHover={{ y: 0 }}
-                >
+                <p className="text-gold text-xs tracking-[0.3em] uppercase mb-2">
                   {item.category}
-                </motion.p>
-                <motion.h3
-                  className="text-white text-2xl font-semibold"
-                  initial={{ y: 20 }}
-                  whileHover={{ y: 0 }}
-                >
+                </p>
+                <h3 className="text-white text-2xl font-semibold">
                   {item.title}
-                </motion.h3>
+                </h3>
               </div>
             </motion.div>
           ))}
@@ -482,7 +441,7 @@ function ServicesSection() {
     <section
       ref={ref}
       id="services"
-      className="relative min-h-screen py-24 section-snap"
+      className="relative min-h-screen py-24"
     >
       <div className="absolute inset-0 opacity-[0.02]" style={{
         backgroundImage: `radial-gradient(circle at 1px 1px, #d4a853 1px, transparent 0)`,
@@ -566,7 +525,7 @@ function TestimonialsSection() {
   return (
     <section
       ref={ref}
-      className="relative min-h-screen flex items-center py-24 section-snap"
+      className="relative min-h-screen flex items-center py-24"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gold/[0.02] to-transparent" />
 
@@ -612,9 +571,10 @@ function TestimonialsSection() {
             <button
               key={i}
               onClick={() => setActive(i)}
-              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
                 i === active ? "bg-gold scale-125" : "bg-white/20 hover:bg-white/40"
               }`}
+              aria-label={`Testimonial ${i + 1}`}
             />
           ))}
         </div>
@@ -631,7 +591,7 @@ function ContactSection() {
     <section
       ref={ref}
       id="contact"
-      className="relative min-h-screen flex items-center py-24 section-snap"
+      className="relative min-h-screen flex items-center py-24"
     >
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16">
         <motion.div
@@ -751,7 +711,7 @@ function ContactSection() {
               />
             </motion.div>
             <motion.button
-              className="w-full py-4 bg-gold text-black font-semibold text-sm tracking-widest uppercase rounded-sm hover:bg-gold-light transition-colors duration-300"
+              className="w-full py-4 bg-gold text-black font-semibold text-sm tracking-widest uppercase rounded-sm hover:bg-gold-light transition-colors duration-300 cursor-pointer"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               initial={{ opacity: 0, y: 20 }}
